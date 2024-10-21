@@ -12,8 +12,8 @@ import java.util.UUID
 
 fun Application.configureRegisterRouting() {
     routing {
-        get("/register") {
-            val receive = call.receive(RegisterReceiveRemote::class)
+        post("/register") {
+            val receive = call.receive<RegisterReceiveRemote>()
             if (!receive.email.isValidEmail()) {
                 call.respond(HttpStatusCode.BadRequest, "Email is not valid")
             }
