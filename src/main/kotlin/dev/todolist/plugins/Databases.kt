@@ -1,3 +1,7 @@
+// This file was auto-generated as part of KTOR bootstrap
+// Find the actual implementation in
+// "kotlin/dev/todolist/database"
+
 package dev.todolist.plugins
 
 import io.ktor.http.*
