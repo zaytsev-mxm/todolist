@@ -13,7 +13,7 @@ fun main() {
         url = "jdbc:postgresql://localhost:5432/todolist",
         driver = "org.postgresql.Driver",
         user = "postgres",
-        password = "YOUR_PASSWORD"
+        password = "Hsdkj3584"
     )
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
