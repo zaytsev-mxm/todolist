@@ -37,7 +37,7 @@ class RegisterController(
             } catch (e: Exception) {
                 call.respond(HttpStatusCode.Conflict, "User already exists")
             }
-            
+
             Tokens.insert(TokenDTO(
                 rowId = UUID.randomUUID().toString(),
                 login = registerReceiveRemote.login,

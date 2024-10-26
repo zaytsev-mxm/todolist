@@ -10,10 +10,10 @@ import org.jetbrains.exposed.sql.Database
 
 fun main() {
     Database.connect(
-        url = "jdbc:postgresql://localhost:5432/todolist",
+        url = System.getenv("DB_URL") ?: "",
         driver = "org.postgresql.Driver",
-        user = "postgres",
-        password = "Hsdkj3584"
+        user = System.getenv("DB_USER") ?: "",
+        password = System.getenv("DB_PASSWORD") ?: "",
     )
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
