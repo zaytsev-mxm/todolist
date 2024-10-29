@@ -11,19 +11,19 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import java.util.*
 
-class RegisterController(
-    private val call: ApplicationCall
-) {
-    suspend fun registerNewUser() {
+class RegisterController {
+    suspend fun registerNewUser(call: ApplicationCall) {
         val registerReceiveRemote = call.receive<RegisterReceiveRemote>()
         if (!registerReceiveRemote.email.isValidEmail()) {
             call.respond(HttpStatusCode.BadRequest, "Email is not valid")
+            return
         }
 
         val userDTO = Users.fetchUser(registerReceiveRemote.login)
 
         if (userDTO != null) {
             call.respond(HttpStatusCode.Conflict, "User already exists")
+            return
         } else {
             val token = UUID.randomUUID().toString()
 
@@ -35,7 +35,8 @@ class RegisterController(
                     username = ""
                 ))
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.Conflict, "User already exists")
+                call.respond(HttpStatusCode.InternalServerError, "User already exists")
+                return
             }
 
             Tokens.insert(TokenDTO(
@@ -45,6 +46,7 @@ class RegisterController(
             ))
 
             call.respond(RegisterResponseRemote(token = token))
+            return
         }
     }
 }

@@ -24,7 +24,7 @@ object Users: Table("users".quote()) {
     fun fetchUser(login: String): UserDTO? {
         return transaction {
             try {
-                val userModel = Users.select { Users.login eq login }.singleOrNull()
+                val userModel = Users.selectAll().where { Users.login eq login }.singleOrNull()
                 userModel?.let {
                     UserDTO(
                         login = it[Users.login],

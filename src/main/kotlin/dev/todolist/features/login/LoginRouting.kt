@@ -4,10 +4,11 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
 fun Application.configureLoginRouting() {
+    val loginController = LoginController()
+
     routing {
         post("/login") {
-            val loginController = LoginController(call)
-            loginController.performLogin()
+            loginController.performLogin(call)
         }
     }
 }
