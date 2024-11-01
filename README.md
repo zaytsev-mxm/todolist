@@ -54,7 +54,6 @@ ALTER TABLE IF EXISTS public.tokens
     OWNER to postgres;
 ```
 
-Then, put your own master-password to `src/main/kotlin/dev/todolist/Application.kt` and 
-for now that should be enough.
+Then you need to `cp .env.example > .env` and fill it in with the values that match your local setup.
 
 Later we'll prove a more real-world looking-like way to run the project.
