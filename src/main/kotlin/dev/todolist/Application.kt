@@ -3,9 +3,11 @@ package dev.todolist
 import dev.todolist.features.login.configureLoginRouting
 import dev.todolist.features.register.configureRegisterRouting
 import dev.todolist.plugins.*
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.cors.routing.*
 import org.jetbrains.exposed.sql.Database
 
 fun main() {
@@ -20,6 +22,10 @@ fun main() {
 }
 
 fun Application.module() {
+    install(CORS) {
+        anyHost()
+        allowHeader(HttpHeaders.ContentType)
+    }
     configureSerialization()
     // configureDatabases()
     configureRouting()
