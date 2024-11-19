@@ -19,91 +19,6 @@ paths:
               examples:
                 Example#1:
                   value: "Hello World!"
-  /json/kotlinx-serialization:
-    get:
-      description: ""
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/Map_String"
-  /users:
-    post:
-      description: "Create user"
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "201":
-          description: "Created"
-          content:
-            '*/*':
-              schema:
-                type: "integer"
-                format: "int32"
-  /users/{id}:
-    delete:
-      description: "Delete user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-    get:
-      description: "Read user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                $ref: "#/components/schemas/ExposedUser"
-        "404":
-          description: "Not Found"
-          content:
-            '*/*':
-              schema:
-                type: "object"
-    put:
-      description: "Update user"
-      parameters:
-      - name: "id"
-        in: "path"
-        required: true
-        schema:
-          type: "integer"
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: "#/components/schemas/ExposedUser"
-        required: true
-      responses:
-        "200":
-          description: "OK"
-          content:
-            '*/*':
-              schema:
-                type: "object"
   /login:
     post:
       description: ""
@@ -117,7 +32,7 @@ paths:
         "404":
           description: "Not Found"
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: "string"
               examples:
@@ -126,13 +41,13 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/LoginResponseRemote"
         "400":
           description: "Bad Request"
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: "string"
               examples:
@@ -151,7 +66,7 @@ paths:
         "400":
           description: "Bad Request"
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: "string"
               examples:
@@ -160,7 +75,7 @@ paths:
         "409":
           description: "Conflict"
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: "string"
               examples:
@@ -169,7 +84,7 @@ paths:
         "500":
           description: "Internal Server Error"
           content:
-            '*/*':
+            'application/json':
               schema:
                 type: "string"
               examples:
@@ -178,26 +93,11 @@ paths:
         "200":
           description: "OK"
           content:
-            '*/*':
+            'application/json':
               schema:
                 $ref: "#/components/schemas/RegisterResponseRemote"
 components:
   schemas:
-    Map:
-      type: "object"
-      properties: {}
-    Map_String:
-      type: "string"
-    ExposedUser:
-      type: "object"
-      properties:
-        name:
-          type: "string"
-        age:
-          type: "integer"
-          format: "int32"
-      required:
-      - "name"
     LoginReceiveRemote:
       type: "object"
       properties:
