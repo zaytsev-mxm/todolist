@@ -26,22 +26,26 @@ class RegisterController {
             return
         } else {
             val token = UUID.randomUUID().toString()
+            val tokenId = UUID.randomUUID().toString()
+            val userId = UUID.randomUUID().toString()
 
             try {
                 Users.insert(UserDTO(
+                    id = userId,
                     login = registerReceiveRemote.login,
                     password = registerReceiveRemote.password,
                     email = registerReceiveRemote.email,
                     username = ""
                 ))
             } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError, "User already exists")
+                println(e)
+                call.respond(HttpStatusCode.InternalServerError, "Something went wrong")
                 return
             }
 
             Tokens.insert(TokenDTO(
-                rowId = UUID.randomUUID().toString(),
-                login = registerReceiveRemote.login,
+                id = tokenId,
+                userId = userId,
                 token = token
             ))
 

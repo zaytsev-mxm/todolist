@@ -1,8 +1,11 @@
 package dev.todolist.database.tokens
 
+import kotlinx.serialization.Serializable
+
 // Data-transfer object
+@Serializable
 class TokenDTO(
-    val rowId: String,
-    val login: String,
+    val id: String,
+    val userId: String,
     val token: String,
 )

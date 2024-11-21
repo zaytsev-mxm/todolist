@@ -36,6 +36,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
+    implementation("org.springframework.security:spring-security-crypto:5.8.0")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }

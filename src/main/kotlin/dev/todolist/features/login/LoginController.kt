@@ -7,6 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import org.springframework.security.crypto.bcrypt.BCrypt
 import java.util.*
 
 class LoginController {
@@ -18,11 +19,12 @@ class LoginController {
             call.respond(HttpStatusCode.NotFound, "User not found")
             return
         } else {
-            if (userDTO.password == loginReceiveRemote.password) {
+            val storedHashedPassword = userDTO.password
+            if (BCrypt.checkpw(loginReceiveRemote.password, storedHashedPassword)) {
                 val token = UUID.randomUUID().toString()
                 Tokens.insert(TokenDTO(
-                    rowId = UUID.randomUUID().toString(),
-                    login = loginReceiveRemote.login,
+                    id = UUID.randomUUID().toString(),
+                    userId = userDTO.id ?: throw IllegalArgumentException("User id cannot be null"),
                     token = token
                 ))
 
