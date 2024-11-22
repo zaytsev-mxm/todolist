@@ -2,6 +2,7 @@ package dev.todolist
 
 import dev.todolist.features.login.configureLoginRouting
 import dev.todolist.features.register.configureRegisterRouting
+import dev.todolist.features.lists.configureListsRouting
 import dev.todolist.plugins.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -31,4 +32,5 @@ fun Application.module() {
     configureRouting()
     configureLoginRouting()
     configureRegisterRouting()
+    configureListsRouting()
 }
