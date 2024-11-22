@@ -46,7 +46,13 @@ class ListsController {
             return
         }
 
-        call.respond(HttpStatusCode.OK, lists)
+        call.respond(HttpStatusCode.OK, lists.map {
+            ListsResponseRemote(
+                id = it.id ?: "",
+                title = it.title,
+                description = it.description,
+            )
+        })
     }
 
     fun getListById(call: ApplicationCall) {
