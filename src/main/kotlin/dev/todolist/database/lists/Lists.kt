@@ -1,8 +1,8 @@
 package dev.todolist.database.lists
 
 import io.ktor.http.*
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.UUID
 
@@ -30,6 +30,23 @@ object Lists : Table("lists".quote()) {
                 )
             } catch (e: Exception) {
                 return@transaction null
+            }
+        }
+    }
+
+    fun fetchListsForUser(userId: String): List<ListDTO>? {
+        return transaction {
+            try {
+                Lists.selectAll().where { Lists.userId eq userId }.map {
+                    ListDTO(
+                        id = it[Lists.id],
+                        title = it[Lists.title],
+                        description = it[Lists.description],
+                        userId = it[Lists.userId]
+                    )
+                }
+            } catch (e: Exception) {
+                null
             }
         }
     }

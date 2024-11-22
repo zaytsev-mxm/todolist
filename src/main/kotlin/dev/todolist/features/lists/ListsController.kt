@@ -31,8 +31,22 @@ class ListsController {
         }
     }
 
-    fun getUserLists(call: ApplicationCall) {
-        TODO()
+    suspend fun getUserLists(call: ApplicationCall) {
+        val tokenDTO = getToken(call)
+
+        if (tokenDTO == null) {
+            call.respond(HttpStatusCode.Unauthorized)
+            return
+        }
+
+        val lists = Lists.fetchListsForUser(tokenDTO.userId)
+
+        if (lists == null) {
+            call.respond(HttpStatusCode.InternalServerError)
+            return
+        }
+
+        call.respond(HttpStatusCode.OK, lists)
     }
 
     fun getListById(call: ApplicationCall) {
