@@ -12,6 +12,8 @@ import io.ktor.server.plugins.cors.routing.*
 import org.jetbrains.exposed.sql.Database
 
 fun main() {
+    System.setProperty("io.ktor.development", "true")
+
     Database.connect(
         url = System.getenv("DB_URL") ?: "",
         driver = "org.postgresql.Driver",
