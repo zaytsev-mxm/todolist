@@ -28,8 +28,9 @@ COPY build.gradle.kts .
 COPY settings.gradle.kts .
 COPY gradle.properties .
 
-# Install dependencies (this layer will be cached unless these files change)
-RUN ./gradlew clean build -x test --no-daemon
+# Copy tools
+COPY .env .
+COPY tools .
 
 # Command to run the application in continuous mode
-CMD ["./gradlew", "run", "--continuous", "--no-daemon"]
+CMD ["sh", "./tools/start.sh"]
