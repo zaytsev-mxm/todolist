@@ -10,13 +10,14 @@ RUN apt-get update && \
 # Set the working directory inside the container
 WORKDIR /app
 
-# Expose port 8080
-EXPOSE 8080
-
 # Set environment variables for the database connection
 ENV DB_URL=${DB_URL}
 ENV DB_USER=${DB_USER}
 ENV DB_PASSWORD=${DB_PASSWORD}
+ENV PORT_APP=${PORT_APP}
+
+# Expose port 8080
+EXPOSE ${PORT_APP}
 
 # Copy the Gradle wrapper and related files
 COPY gradlew .

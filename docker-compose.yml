@@ -1,12 +1,15 @@
 services:
   db:
-    image: postgres:15
+    image: postgres:15-alpine
     environment:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${PORT_DB}:${PORT_DB}"
     volumes:
       - db-data:/var/lib/postgresql/data
+      - ./db-init:/docker-entrypoint-initdb.d
     networks:
       - app-network
 
@@ -16,15 +19,22 @@ services:
     depends_on:
       - db
     ports:
-      - "${PORT}:8080"
+      - "${PORT_APP}:${PORT_APP}"
     environment:
       DB_URL: ${DB_URL}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
+      PORT_APP: ${PORT_APP}
     volumes:
       - .:/app
     networks:
       - app-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "${PORT_ADMINER}:8080"
 
 volumes:
   db-data:

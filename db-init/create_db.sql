@@ -1,0 +1,9 @@
+-- create_db.sql
+-- DO
+-- $do$
+-- BEGIN
+--    IF NOT EXISTS (SELECT FROM pg_database WHERE datname = '${DB_NAME}') THEN
+--       PERFORM dblink_exec('dbname=' || current_database(), 'CREATE DATABASE ${DB_NAME}');
+-- END IF;
+-- END
+-- $do$;

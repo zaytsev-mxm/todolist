@@ -18,7 +18,7 @@ fun main() {
         user = System.getenv("DB_USER") ?: "",
         password = System.getenv("DB_PASSWORD") ?: "",
     )
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
+    embeddedServer(Netty, port = System.getenv("PORT_APP").toInt(), host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
