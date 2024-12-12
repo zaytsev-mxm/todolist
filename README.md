@@ -11,7 +11,11 @@ we will be able to:
 ## Basic setup
 
 Everything is as simple as:
-```
+```sh
+# Create the .env file (amend its content if needed)
+cp .env.sample .env
+
+# Run the app
 docker compose up
 ```
 😃 Enjoy!
