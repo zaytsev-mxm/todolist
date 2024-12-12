@@ -20,6 +20,11 @@ docker compose up
 ```
 😃 Enjoy!
 
+## Testing the API
+You can easily test the API using Postman. In order to do that, just:
+- Install [Postman](https://www.postman.com/)
+- Import the request collection that you can find [here](./tools/postman/ToDo%20List.postman_collection.json)
+
 ## Publishing new Docker image versions cheatsheet
 
 Let's assume that the version we need to publish is `1.0.1`
