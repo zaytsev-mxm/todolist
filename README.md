@@ -1,6 +1,6 @@
 # ToDo App
 
-Here we will try to create back-end for a ToDO application, where
+Here we will try to create back-end for a ToDo application, where
 we will be able to:
 
 - register new users
