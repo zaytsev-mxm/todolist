@@ -10,50 +10,22 @@ we will be able to:
 
 ## Basic setup
 
-You can clone this repo, and create a local database to connect to.
-For now, we will use PostgreSQL. Find samle scripts here:
-
-**Table "users"**
-```sql
--- Table: public.users
-
--- DROP TABLE IF EXISTS public.users;
-
-CREATE TABLE IF NOT EXISTS public.users
-(
-    login character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    password character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    username character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(50) COLLATE pg_catalog."default",
-    CONSTRAINT users_pkey PRIMARY KEY (login)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.users
-    OWNER to postgres;
+Everything is as simple as:
 ```
-
-**Table "tokens"**
-```sql
--- Table: public.tokens
-
--- DROP TABLE IF EXISTS public.tokens;
-
-CREATE TABLE IF NOT EXISTS public.tokens
-(
-    id character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    login character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    token character varying(50) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT tokens_pkey PRIMARY KEY (id)
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.tokens
-    OWNER to postgres;
+docker compose up
 ```
+😃 Enjoy!
 
-Then you need to `cp .env.example > .env` and fill it in with the values that match your local setup.
+## Publishing new Docker image versions cheatsheet
 
-Later we'll prove a more real-world looking-like way to run the project.
+Let's assume that the version we need to publish is `1.0.1`
+```sh
+# Build the image
+docker buildx build . --tag=todolist-backend:1.0.1
+
+# Tag the built image
+docker tag todolist-backend:1.0.1 zaytsevmxm/todolist-backend:1.0.1
+
+# Push the image
+docker push zaytsevmxm/todolist-backend:1.0.1
+```
