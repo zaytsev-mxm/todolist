@@ -1,16 +1,9 @@
-FROM openjdk:20-jdk-slim
+FROM amazoncorretto:21
 
 # Mmetadata
-LABEL version="1.0.0"
+LABEL version="1.0.2"
 LABEL description="ToDo list backend"
 LABEL maintainer="zaytsev.mxm@gmail.com"
-
-# inotify-tools: Allows Gradle to watch for file changes in the container.
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    findutils \
-    inotify-tools \
-    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
 WORKDIR /app

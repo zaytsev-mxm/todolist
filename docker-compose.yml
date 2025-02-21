@@ -14,7 +14,7 @@ services:
       - app-network
 
   app:
-    image: zaytsevmxm/todolist-backend:1.0.1
+    image: zaytsevmxm/todolist-backend:1.0.2
     depends_on:
       - db
     ports:

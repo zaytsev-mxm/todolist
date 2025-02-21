@@ -56,7 +56,8 @@ ALTER TABLE public.todos OWNER TO postgres;
 CREATE TABLE public.tokens (
     id character varying(60) NOT NULL,
     user_id character varying(60) NOT NULL,
-    token character varying(60) NOT NULL
+    token character varying(60) NOT NULL,
+    expires_at TIMESTAMP NOT NULL
 );
 
 
