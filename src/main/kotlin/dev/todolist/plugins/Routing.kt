@@ -11,6 +11,10 @@ fun Application.configureRouting() {
             call.respondText("Hello World!")
         }
 
+        get("/lenochka") {
+            call.respondText { "Losho4ek" }
+        }
+
         swaggerUI(path = "swagger", swaggerFile = "src/main/resources/openapi/documentation.yaml") {
             version = "4.15.5"
         }
