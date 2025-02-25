@@ -15,7 +15,7 @@ class RegisterController {
     suspend fun registerNewUser(call: ApplicationCall) {
         val registerReceiveRemote = call.receive<RegisterReceiveRemote>()
         if (!registerReceiveRemote.email.isValidEmail()) {
-            call.respond(HttpStatusCode.BadRequest, "Email is not valid")
+            call.respond(HttpStatusCode.UnprocessableEntity, "Email is not valid")
             return
         }
 
