@@ -32,7 +32,7 @@ class LoginController {
                 call.respond(LoginResponseRemote(token = token))
                 return
             } else {
-                call.respond(HttpStatusCode.BadRequest, "Invalid password")
+                call.respond(HttpStatusCode.Unauthorized, "Invalid password")
                 return
             }
         }
