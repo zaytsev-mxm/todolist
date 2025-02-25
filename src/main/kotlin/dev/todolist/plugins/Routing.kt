@@ -12,7 +12,11 @@ fun Application.configureRouting() {
         }
 
         get("/lenochka") {
-            call.respondText { "Losho4ek" }
+            call.respondText { """
+                Уууууууууу, Леночка!
+                Смотри как я привязал свой сервис к своему домену!!!!!
+                Красота жы да?
+            """.trimIndent() }
         }
 
         swaggerUI(path = "swagger", swaggerFile = "src/main/resources/openapi/documentation.yaml") {
