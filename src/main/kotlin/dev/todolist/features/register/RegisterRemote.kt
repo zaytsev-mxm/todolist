@@ -1,5 +1,6 @@
 package dev.todolist.features.register
 
+import dev.todolist.database.users.UserDTO
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -12,4 +13,5 @@ data class RegisterReceiveRemote(
 @Serializable
 data class RegisterResponseRemote(
     val token: String,
+    val userDTO: UserDTO,
 )

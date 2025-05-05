@@ -29,7 +29,7 @@ class LoginController {
                 ))
 
                 call.response.cookies.append(Cookie("token", token))
-                call.respond(LoginResponseRemote(token = token))
+                call.respond(LoginResponseRemote(token, userDTO))
                 return
             } else {
                 call.respond(HttpStatusCode.Unauthorized, "Invalid password")

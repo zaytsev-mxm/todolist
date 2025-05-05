@@ -4,7 +4,7 @@ Here we will try to create back-end for a ToDo application, where
 we will be able to:
 
 - register new users
-- login those users
+- log in those users
 - create ToDo lists
 - edit those ToDo lists (add items, edit items, mark as done, etc.)
 
@@ -21,7 +21,7 @@ docker compose up
 😃 Enjoy!
 
 ## Testing the API
-You can easily test the API using Postman. In order to do that, just:
+You can easily test the API using Postman. To do that, just:
 - Install [Postman](https://www.postman.com/)
 - Import the request collection that you can find [here](./tools/postman/ToDo%20List.postman_collection.json)
 
