@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "588762dc-24c7-4b61-9283-22de5e56a5f0",
+		"_postman_id": "f9cf2182-6b2d-4ce5-901c-594751ab8082",
 		"name": "ToDo List",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "4134803"
@@ -12,14 +12,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "0.0.0.0:8080",
+					"raw": "{{host}}",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
-					],
-					"port": "8080"
+						"{{host}}"
+					]
 				}
 			},
 			"response": []
@@ -39,14 +35,10 @@
 					}
 				},
 				"url": {
-					"raw": "0.0.0.0:8080/register",
+					"raw": "{{host}}/register",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"register"
 					]
@@ -69,14 +61,10 @@
 					}
 				},
 				"url": {
-					"raw": "0.0.0.0:8080/login",
+					"raw": "{{host}}/login",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"login"
 					]
@@ -99,14 +87,10 @@
 					}
 				},
 				"url": {
-					"raw": "0.0.0.0:8080/lists",
+					"raw": "{{host}}/lists",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"lists"
 					]
@@ -120,20 +104,88 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "0.0.0.0:8080/lists",
+					"raw": "{{host}}/lists",
 					"host": [
-						"0",
-						"0",
-						"0",
-						"0"
+						"{{host}}"
 					],
-					"port": "8080",
 					"path": [
 						"lists"
 					]
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "05. Get current user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/user",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "06. Update current user",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user\": {\n    \"username\": \"Maksimka\"\n}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{host}}/user",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "0.0.0.0",
+			"type": "string"
 		}
 	]
 }
