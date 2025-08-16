@@ -20,6 +20,12 @@ docker compose up
 ```
 😃 Enjoy!
 
+## Git Hooks
+
+Please set up the Git hooks before you commit or push anything.
+
+To do so, run this script [./tools/git/setup-hooks.sh](./tools/git/setup-hooks.sh)
+
 ## Testing the API
 You can easily test the API using Postman. To do that, just:
 - Install [Postman](https://www.postman.com/)
