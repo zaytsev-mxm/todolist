@@ -4,8 +4,10 @@ set -euo pipefail
 trap 'echo "Error: Failed to tag image. See messages above." >&2' ERR
 
 # Load .env variables via helper
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+ROOT_DIR="$(git -C "$SCRIPT_DIR" rev-parse --show-toplevel)"
 . "$(dirname "$0")/load-env.sh"
-load_env "../../.env"
+load_env "$ROOT_DIR/.env"
 echo "Environment loaded from ../../.env"
 
 # Ensure VERSION is set

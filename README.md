@@ -43,10 +43,14 @@ Make sure you have it set before you build the image. Refer to [.env.sample](.en
 ```sh
 # Build the image
 sh tools/docker/build.sh
+```
 
+```sh
 # Tag the built image
 sh tools/docker/tag.sh
+```
 
+```sh
 # Push the image
 sh tools/docker/push.sh
 ```
