@@ -13,11 +13,14 @@ fun Application.configureUserRouting(
 ) {
     routing {
         route("/users") {
-            get {
-                userController.getCurrentUser(call)
-            }
-            patch {
-                userController.updateCurrentUser(call)
+            // Current user endpoints under /users/me for clarity
+            route("/me") {
+                get {
+                    userController.getCurrentUser(call)
+                }
+                patch {
+                    userController.updateCurrentUser(call)
+                }
             }
             post {
                 userController.addNewUser(call)
