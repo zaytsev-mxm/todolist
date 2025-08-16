@@ -20,6 +20,11 @@ docker compose up
 ```
 😃 Enjoy!
 
+### How to run via IntelliJ IDEA
+
+If you are using IntelliJ IDEA, you can run the app by pressing the green play button in your IDE.
+For a detailed guide, please see [this](./docs/LAUNCHING_WITH_INTELLIJ_IDEA.md) document.
+
 ## Git Hooks
 
 Please set up the Git hooks before you commit or push anything.
