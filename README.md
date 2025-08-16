@@ -34,18 +34,19 @@ To do so, run this script [./tools/git/setup-hooks.sh](./tools/git/setup-hooks.s
 ## Testing the API
 You can easily test the API using Postman. To do that, just:
 - Install [Postman](https://www.postman.com/)
-- Import the request collection that you can find [here](./tools/postman/ToDo%20List.postman_collection.json)
+- Import the request collection that you can find [here](./tools/postman/ToDo%20List.postman_collection.json), and also use the environment setup from this [file](./tools/postman/ToDoEr%20Local.postman_environment.json).
 
 ## Publishing new Docker image versions cheatsheet
 
-Let's assume that the version we need to publish is `1.0.1`
+New versions of the Docker images you build should be controlled via the `DOCKER_IMAGE_VERSION` environment variable.
+Make sure you have it set before you build the image. Refer to [.env.sample](.env.sample) for more details.
 ```sh
 # Build the image
-docker buildx build . --tag=todolist-backend:1.0.1
+sh tools/docker/build.sh
 
 # Tag the built image
-docker tag todolist-backend:1.0.1 zaytsevmxm/todolist-backend:1.0.1
+sh tools/docker/tag.sh
 
 # Push the image
-docker push zaytsevmxm/todolist-backend:1.0.1
+sh tools/docker/push.sh
 ```
