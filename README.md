@@ -16,7 +16,7 @@ Everything is as simple as:
 cp .env.sample .env
 
 # Run the app
-docker compose up
+docker compose up --build
 ```
 😃 Enjoy!
 
