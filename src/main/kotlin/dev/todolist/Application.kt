@@ -3,6 +3,7 @@ package dev.todolist
 import dev.todolist.features.login.configureLoginRouting
 import dev.todolist.features.register.configureRegisterRouting
 import dev.todolist.features.lists.configureListsRouting
+import dev.todolist.features.user.configureUserRouting
 import dev.todolist.utils.TokensManagement
 import dev.todolist.plugins.*
 import io.ktor.http.*
@@ -14,7 +15,7 @@ import org.jetbrains.exposed.sql.Database
 
 fun main() {
     Database.connect(
-        url = System.getenv("DB_URL") ?: "",
+        url = getDbUrl(),
         driver = "org.postgresql.Driver",
         user = System.getenv("DB_USER") ?: "",
         password = System.getenv("DB_PASSWORD") ?: "",
@@ -23,18 +24,28 @@ fun main() {
         .start(wait = true)
 }
 
+fun getDbUrl(): String {
+    val dbHost = System.getenv("DB_HOST") ?: ""
+    val portDb = System.getenv("PORT_DB") ?: ""
+    val dbName = System.getenv("DB_NAME") ?: ""
+    return "jdbc:postgresql://${dbHost}:${portDb}/${dbName}"
+}
+
 fun Application.module() {
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
     }
 
+    // Utils:
     configureSerialization()
-    // configureDatabases()
+
+    // Routes:
     configureRouting()
     configureLoginRouting()
     configureRegisterRouting()
     configureListsRouting()
+    configureUserRouting()
 
     TokensManagement.startTokenCleanupJob()
 }

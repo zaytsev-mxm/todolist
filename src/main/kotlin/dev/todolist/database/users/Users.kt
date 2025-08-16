@@ -24,7 +24,7 @@ object Users: Table("users".quote()) {
 
             Users.insert {
                 it[id] = userDTO.id ?: throw IllegalArgumentException("User ID cannot be null")
-                it[login] = userDTO.login
+                it[login] = userDTO.login ?: ""
                 it[password] = hashedPassword
                 it[username] = userDTO.username ?: ""
                 it[email] = userDTO.email ?: ""
@@ -32,21 +32,52 @@ object Users: Table("users".quote()) {
         }
     }
 
-    fun fetchUser(login: String): UserDTO? {
-        return transaction {
-            try {
-                val userModel = Users.selectAll().where { Users.login eq login }.singleOrNull()
-                userModel?.let {
-                    UserDTO(
-                        id = it[Users.id],
-                        login = it[Users.login],
-                        password = it[Users.password],
-                        username = it[Users.username],
-                        email = it[Users.email],
-                    )
+    fun fetchUser(login: String? = null, id: String? = null): UserDTO? {
+        if (login != null) {
+            return transaction {
+                try {
+                    val userModel = Users.selectAll().where { Users.login eq login }.singleOrNull()
+                    userModel?.let {
+                        UserDTO(
+                            id = it[Users.id],
+                            login = it[Users.login],
+                            password = it[Users.password],
+                            username = it[Users.username],
+                            email = it[Users.email],
+                        )
+                    }
+                } catch (e: Exception) {
+                    null
                 }
-            } catch (e: Exception) {
-                null
+            }
+        } else if (id != null) {
+            return transaction {
+                try {
+                    val userModel = Users.selectAll().where { Users.id eq id }.singleOrNull()
+                    userModel?.let {
+                        UserDTO(
+                            id = it[Users.id],
+                            login = it[Users.login],
+                            password = it[Users.password],
+                            username = it[Users.username],
+                            email = it[Users.email],
+                        )
+                    }
+                } catch (e: Exception) {
+                    null
+                }
+            }
+        } else {
+            return null
+        }
+    }
+
+    fun update(userDTO: UserDTO) {
+        transaction {
+            val id = userDTO.id ?: ""
+            val userName = userDTO.username ?: ""
+            Users.update({ Users.id eq id }) {
+                it[Users.username] = userName
             }
         }
     }
