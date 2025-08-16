@@ -1,0 +1,6 @@
+#!/bin/sh
+MSG_FILE="$1"
+if ! grep -qE '^[A-Z]+-[0-9]+' "$MSG_FILE"; then
+  echo "Commit message must start with TICKET like ABC-123" >&2
+  exit 1
+fi
