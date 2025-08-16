@@ -6,33 +6,34 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
+import io.ktor.server.routing.route
 
-fun Application.configureUserRouting() {
-    val userController = UserController()
-
+fun Application.configureUserRouting(
+    userController: UserController = UserController()
+) {
     routing {
-        get("/user") {
-            userController.getCurrentUser(call)
-        }
+        route("/users") {
+            get {
+                userController.getCurrentUser(call)
+            }
+            patch {
+                userController.updateCurrentUser(call)
+            }
+            post {
+                userController.addNewUser(call)
+            }
 
-        get("/user/{id}") {
-            userController.getUserById(call)
-        }
-
-        patch("/user") {
-            userController.updateCurrentUser(call)
-        }
-
-        patch("/user/{id}") {
-            userController.updateUserById(call)
-        }
-
-        post("/user") {
-            userController.addNewUser(call)
-        }
-
-        delete("/user/{id}") {
-            userController.removeUserById(call)
+            route("/{id}") {
+                get {
+                    userController.getUserById(call)
+                }
+                patch {
+                    userController.updateUserById(call)
+                }
+                delete {
+                    userController.removeUserById(call)
+                }
+            }
         }
     }
 }
