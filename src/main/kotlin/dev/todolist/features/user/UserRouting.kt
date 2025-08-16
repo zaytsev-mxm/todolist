@@ -7,34 +7,41 @@ import io.ktor.server.routing.patch
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.routing.route
+import io.ktor.server.auth.authenticate
 
 fun Application.configureUserRouting(
     userController: UserController = UserController()
 ) {
     routing {
-        route("/users") {
-            // Current user endpoints under /users/me for clarity
-            route("/me") {
-                get {
-                    userController.getCurrentUser(call)
+        // Apply auth to all user routes if appropriate
+        authenticate {
+            route("/users") {
+                // Current user endpoints should live under /users/me
+                route("/me") {
+                    get {
+                        userController.getCurrentUser(call)
+                    }
+                    patch {
+                        userController.updateCurrentUser(call)
+                    }
                 }
-                patch {
-                    userController.updateCurrentUser(call)
-                }
-            }
-            post {
-                userController.addNewUser(call)
-            }
 
-            route("/{id}") {
-                get {
-                    userController.getUserById(call)
+                // Decide whether to keep POST /users or rely on /register (authorization may be required)
+                post {
+                    userController.addNewUser(call)
                 }
-                patch {
-                    userController.updateUserById(call)
-                }
-                delete {
-                    userController.removeUserById(call)
+
+                // Item endpoints
+                route("/{id}") {
+                    get {
+                        userController.getUserById(call)
+                    }
+                    patch {
+                        userController.updateUserById(call)
+                    }
+                    delete {
+                        userController.removeUserById(call)
+                    }
                 }
             }
         }

@@ -35,6 +35,7 @@ dependencies {
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("org.springframework.security:spring-security-crypto:5.8.0")
+    implementation("io.ktor:ktor-server-auth:${ktor_version}")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
