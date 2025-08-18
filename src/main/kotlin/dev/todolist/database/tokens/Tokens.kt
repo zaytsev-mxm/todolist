@@ -47,7 +47,7 @@ object Tokens : Table("tokens".quote()) {
                         expiresAt = it[expiresAt].toString()
                     )
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 null
             }
         }
