@@ -16,6 +16,7 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import io.ktor.server.response.respond
 import org.jetbrains.exposed.sql.Database
 
 fun main() {
@@ -62,6 +63,12 @@ fun Application.module() {
                 .withIssuer(TokenConstants.issuer)
                 .build()
             )
+            validate { credential ->
+                if (credential.payload.audience.contains(audience)) JWTPrincipal(credential.payload) else null
+            }
+            challenge { defaultScheme, realm ->
+                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+            }
         }
     }
 
