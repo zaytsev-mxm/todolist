@@ -22,33 +22,31 @@ class LoginController {
             call.respond(HttpStatusCode.NotFound, "User not found")
             return
         } else {
-            val storedHashedPassword = userDTO.password
-            if (BCrypt.checkpw(loginReceiveRemote.password, storedHashedPassword)) {
-                val token = UUID.randomUUID().toString()
-                Tokens.insert(TokenDTO(
-                    id = UUID.randomUUID().toString(),
-                    userId = userDTO.id ?: throw IllegalArgumentException("User id cannot be null"),
-                    token = token
-                ))
-                val jwtString = makeJwtString(userDTO.id)
-
-                println(jwtString)
-
-                call.response.cookies.append(Cookie("token", token))
-                call.respond(LoginResponseRemote(token, userDTO))
-                return
-            } else {
-                call.respond(HttpStatusCode.Unauthorized, "Invalid password")
-                return
+            with (userDTO.id ?: throw IllegalArgumentException("User id cannot be null")) {
+                val storedHashedPassword = userDTO.password
+                if (BCrypt.checkpw(loginReceiveRemote.password, storedHashedPassword)) {
+                    val jwtString = makeJwtString(userDTO.id)
+                    Tokens.insert(TokenDTO(
+                        id = UUID.randomUUID().toString(),
+                        userId = userDTO.id,
+                        token = jwtString
+                    ))
+                    call.response.cookies.append(Cookie("token", jwtString))
+                    call.respond(LoginResponseRemote(jwtString, userDTO))
+                    return
+                } else {
+                    call.respond(HttpStatusCode.Unauthorized, "Invalid password")
+                    return
+                }
             }
         }
     }
 
-    private fun makeJwtString(username: String): String {
+    private fun makeJwtString(userid: String): String {
         val token = JWT.create()
             .withAudience(TokenConstants.audience)
             .withIssuer(TokenConstants.issuer)
-            .withClaim("username", username)
+            .withClaim("userid", userid)
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(TokenConstants.secret))
 
