@@ -64,10 +64,14 @@ fun Application.module() {
                 .build()
             )
             validate { credential ->
-                if (credential.payload.audience.contains(audience)) JWTPrincipal(credential.payload) else null
+                if (credential.payload.getClaim("userid").asString() != "") {
+                    JWTPrincipal(credential.payload)
+                } else {
+                    null
+                }
             }
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired. DefaultScheme: $defaultScheme, realm: $realm")
             }
         }
     }
