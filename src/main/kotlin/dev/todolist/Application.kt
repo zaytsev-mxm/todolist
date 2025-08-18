@@ -1,5 +1,7 @@
 package dev.todolist
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import dev.todolist.features.login.configureLoginRouting
 import dev.todolist.features.register.configureRegisterRouting
 import dev.todolist.features.lists.configureListsRouting
@@ -52,8 +54,14 @@ fun Application.module() {
     val audience = TokenConstants.audience
     val myRealm = TokenConstants.realm
     install(Authentication) {
-        jwt {
-            // ...
+        jwt("auth-jwt") {
+            realm = myRealm
+            verifier(JWT
+                .require(Algorithm.HMAC256(TokenConstants.secret))
+                .withAudience(TokenConstants.audience)
+                .withIssuer(TokenConstants.issuer)
+                .build()
+            )
         }
     }
 
