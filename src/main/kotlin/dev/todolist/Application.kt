@@ -6,11 +6,14 @@ import dev.todolist.features.lists.configureListsRouting
 import dev.todolist.features.user.configureUserRouting
 import dev.todolist.utils.TokensManagement
 import dev.todolist.plugins.*
+import dev.todolist.utils.TokenConstants
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import org.jetbrains.exposed.sql.Database
 
 fun main() {
@@ -35,6 +38,23 @@ fun Application.module() {
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
+    }
+
+    /**
+     * TODO: red those values from config
+     */
+    /*val secret = environment.config.property("jwt.secret").getString()
+    val issuer = environment.config.property("jwt.issuer").getString()
+    val audience = environment.config.property("jwt.audience").getString()
+    val myRealm = environment.config.property("jwt.realm").getString()*/
+    val secret = TokenConstants.secret
+    val issuer = TokenConstants.issuer
+    val audience = TokenConstants.audience
+    val myRealm = TokenConstants.realm
+    install(Authentication) {
+        jwt {
+            // ...
+        }
     }
 
     // Utils:
