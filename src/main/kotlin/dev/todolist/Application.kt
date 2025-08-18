@@ -10,6 +10,7 @@ import dev.todolist.utils.TokensManagement
 import dev.todolist.plugins.*
 import dev.todolist.utils.TokenConstants
 import io.ktor.http.*
+import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
@@ -63,6 +64,13 @@ fun Application.module() {
                 .withIssuer(TokenConstants.issuer)
                 .build()
             )
+            // Extract JWT from a cookie named "token"
+            // (by default, Ktor expects it to be sent as an "Authorization: Bearer ...value" header)
+            authHeader { call ->
+                call.request.cookies["token"]?.let { token ->
+                    HttpAuthHeader.Single("Bearer", token)
+                }
+            }
             validate { credential ->
                 if (credential.payload.getClaim("userid").asString() != "") {
                     JWTPrincipal(credential.payload)
