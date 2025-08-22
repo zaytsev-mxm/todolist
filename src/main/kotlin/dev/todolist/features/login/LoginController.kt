@@ -47,6 +47,7 @@ class LoginController {
             .withAudience(TokenConstants.audience)
             .withIssuer(TokenConstants.issuer)
             .withClaim("userid", userid)
+            .withClaim("zhopabobra", "votonavotona")
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(TokenConstants.secret))
 

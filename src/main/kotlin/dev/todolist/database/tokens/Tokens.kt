@@ -17,7 +17,7 @@ import java.time.temporal.ChronoUnit
 object Tokens : Table("tokens".quote()) {
     private val id = varchar("id".quote(), 60)
     private val userId = varchar("user_id".quote(), 60)
-    private val token = varchar("token".quote(), 256)
+    private val token = varchar("token".quote(), 512)
     private val expiresAt = datetime("expires_at".quote())
 
     fun insert(tokenDTO: TokenDTO) {
