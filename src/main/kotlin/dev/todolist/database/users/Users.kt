@@ -2,6 +2,7 @@ package dev.todolist.database.users
 
 import io.ktor.http.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.security.crypto.bcrypt.BCrypt
 
@@ -32,43 +33,30 @@ object Users: Table("users".quote()) {
         }
     }
 
+    private fun toDTO(row: ResultRow): UserDTO =
+        UserDTO(
+            id = row[Users.id],
+            login = row[Users.login],
+            password = row[Users.password],
+            username = row[Users.username],
+            email = row[Users.email],
+        )
+
     fun fetchUser(login: String? = null, id: String? = null): UserDTO? {
-        if (login != null) {
-            return transaction {
-                try {
-                    val userModel = Users.selectAll().where { Users.login eq login }.singleOrNull()
-                    userModel?.let {
-                        UserDTO(
-                            id = it[Users.id],
-                            login = it[Users.login],
-                            password = it[Users.password],
-                            username = it[Users.username],
-                            email = it[Users.email],
-                        )
-                    }
-                } catch (e: Exception) {
-                    null
-                }
+        val condition = when {
+            login != null -> Users.login eq login
+            id != null -> Users.id eq id
+            else -> return null
+        }
+
+        return transaction {
+            try {
+                Users.selectAll().where { condition }
+                    .singleOrNull()
+                    ?.let(::toDTO)
+            } catch (e: Exception) {
+                null
             }
-        } else if (id != null) {
-            return transaction {
-                try {
-                    val userModel = Users.selectAll().where { Users.id eq id }.singleOrNull()
-                    userModel?.let {
-                        UserDTO(
-                            id = it[Users.id],
-                            login = it[Users.login],
-                            password = it[Users.password],
-                            username = it[Users.username],
-                            email = it[Users.email],
-                        )
-                    }
-                } catch (e: Exception) {
-                    null
-                }
-            }
-        } else {
-            return null
         }
     }
 
