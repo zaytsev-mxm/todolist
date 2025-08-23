@@ -37,3 +37,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Generated Schemas ###
+generated-kotlin-client/
+generated-typescript-client/

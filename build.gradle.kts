@@ -3,6 +3,7 @@ val logback_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
 val ktor_version: String by project
+val spring_security_crypto_version: String by project
 
 plugins {
     kotlin("jvm") version "2.0.21"
@@ -34,7 +35,9 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.2")
     implementation("io.ktor:ktor-server-swagger:$ktor_version")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
-    implementation("org.springframework.security:spring-security-crypto:5.8.0")
+    implementation("io.ktor:ktor-server-auth:${ktor_version}")
+    implementation("io.ktor:ktor-server-auth-jwt:${ktor_version}")
+    implementation("org.springframework.security:spring-security-crypto:$spring_security_crypto_version")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 }
