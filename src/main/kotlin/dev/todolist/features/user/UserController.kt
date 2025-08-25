@@ -8,6 +8,11 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 
+data class UserPrincipal(
+    val id: String? = null,
+    val roles: Set<String> = emptySet()
+)
+
 class UserController : RouteController() {
     suspend fun getCurrentUser(call: ApplicationCall) {
         val tokenDTO = getToken(call)

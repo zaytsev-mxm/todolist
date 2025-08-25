@@ -11,14 +11,6 @@ fun Application.configureListsRouting() {
     val listsController = ListsController()
 
     routing {
-        authenticate("auth-jwt") {
-            get("/jwt") {
-                val principal = call.principal<JWTPrincipal>()
-                val userid = principal!!.payload.getClaim("userid").asString()
-                val expiresAt = principal.expiresAt?.time?.minus(System.currentTimeMillis())
-                call.respondText("Hello, $userid! Token is expired at $expiresAt ms.")
-            }
-        }
         get("/lists") {
             listsController.getUserLists(call)
         }

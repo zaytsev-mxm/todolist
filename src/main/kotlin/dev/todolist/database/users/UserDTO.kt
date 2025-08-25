@@ -10,4 +10,5 @@ data class UserDTO(
     val password: String? = null,
     val email: String? = null,
     val username: String? = null,
+    var roles: Set<String> = emptySet()
 )

@@ -2,9 +2,11 @@ package dev.todolist
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import dev.todolist.database.users.Users
 import dev.todolist.features.login.configureLoginRouting
 import dev.todolist.features.register.configureRegisterRouting
 import dev.todolist.features.lists.configureListsRouting
+import dev.todolist.features.user.UserPrincipal
 import dev.todolist.features.user.configureUserRouting
 import dev.todolist.utils.TokensManagement
 import dev.todolist.plugins.*
@@ -12,10 +14,10 @@ import dev.todolist.utils.TokenConstants
 import io.ktor.http.*
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.*
+import io.ktor.server.auth.Authentication
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.*
-import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.respond
 import org.jetbrains.exposed.sql.Database
@@ -72,11 +74,17 @@ fun Application.module() {
                 }
             }
             validate { credential ->
-                if (credential.payload.getClaim("userid").asString() != "") {
-                    JWTPrincipal(credential.payload)
-                } else {
-                    null
-                }
+                val userId = credential.payload.getClaim("userid").asString().orEmpty()
+                if (userId.isBlank()) return@validate null
+
+                // Single DB fetch with minimal fields
+                val userDTO = Users.fetchUser(id = userId) ?: return@validate null
+                // TODO: currently I use a plain data class UserPrincipal,
+                //  but in the future I will use a class with more fields,
+                //  like roles, permissions, etc.
+                //  I need to consider extending the JWTPrincipal class to achieve this.
+                //  @SEE (import io.ktor.server.auth.jwt.JWTPrincipal)
+                UserPrincipal(id = userDTO.id, roles = userDTO.roles) // no more DB in handlers
             }
             challenge { defaultScheme, realm ->
                 call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired. DefaultScheme: $defaultScheme, realm: $realm")
