@@ -46,20 +46,9 @@ fun Application.module() {
         allowHeader(HttpHeaders.ContentType)
     }
 
-    /**
-     * TODO: red those values from config
-     */
-    /*val secret = environment.config.property("jwt.secret").getString()
-    val issuer = environment.config.property("jwt.issuer").getString()
-    val audience = environment.config.property("jwt.audience").getString()
-    val myRealm = environment.config.property("jwt.realm").getString()*/
-    val secret = TokenConstants.secret
-    val issuer = TokenConstants.issuer
-    val audience = TokenConstants.audience
-    val myRealm = TokenConstants.realm
     install(Authentication) {
         jwt("auth-jwt") {
-            realm = myRealm
+            realm = TokenConstants.realm
             verifier(JWT
                 .require(Algorithm.HMAC256(TokenConstants.secret))
                 .withAudience(TokenConstants.audience)

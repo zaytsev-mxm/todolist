@@ -1,6 +1,7 @@
 package dev.todolist.features.user
 
 import dev.todolist.features.auth.requireOwner
+import dev.todolist.features.auth.requireRole
 import io.ktor.server.application.Application
 import io.ktor.server.auth.authenticate
 import io.ktor.server.auth.jwt.JWTPrincipal
@@ -15,41 +16,48 @@ import io.ktor.server.routing.routing
 
 fun Application.configureUserRouting(userController: UserController = UserController()) {
     routing {
-        authenticate("auth-jwt") {
-            get("/jwt") {
-                val p = call.principal<UserPrincipal>()
-                val principal = call.principal<JWTPrincipal>()
-                val userid = principal?.payload?.getClaim("userid")?.asString()
-                print(p.toString())
-                val expiresAt = principal?.expiresAt?.time?.minus(System.currentTimeMillis())
-                call.respondText("Hello, ${p?.id}! Token is expired at $expiresAt ms.")
+        route("/users") {
+            post {
+                userController.addNewUser(call)
             }
 
-            route("/user") {
+            authenticate("auth-jwt") {
                 get {
-                    userController.getCurrentUser(call)
+                    val p = call.principal<UserPrincipal>()!!
+                    call.requireRole(p, "admin")
+                    call.respondText(
+                        "Hello, ${
+                            (call.principal<JWTPrincipal>()?.payload?.getClaim("username")?.asString())
+                        }! It seems you're admin!'"
+                    )
                 }
 
-                patch {
-                    userController.updateCurrentUser(call)
-                }
+                route("/me") {
+                    get {
+                        userController.getCurrentUser(call)
+                    }
 
-                post {
-                    userController.addNewUser(call)
+                    patch {
+                        userController.updateCurrentUser(call)
+                    }
                 }
 
                 route("/{id}") {
                     get {
+                        val p = call.principal<UserPrincipal>()!!
+                        call.requireOwner(p)
                         userController.getUserById(call)
                     }
 
                     patch {
-                        // val p = call.principal<UserPrincipal>()!!
-                        // call.requireOwner(p)
+                        val p = call.principal<UserPrincipal>()!!
+                        call.requireOwner(p)
                         userController.updateUserById(call)
                     }
 
                     delete {
+                        val p = call.principal<UserPrincipal>()!!
+                        call.requireOwner(p)
                         userController.removeUserById(call)
                     }
                 }
