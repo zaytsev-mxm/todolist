@@ -3,7 +3,6 @@ package dev.todolist.plugins
 import dev.todolist.features.user.UserPrincipal
 import io.ktor.server.application.*
 import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.principal
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -22,7 +21,9 @@ fun Application.configureRouting() {
         authenticate("auth-jwt") {
             get("/jwt") {
                 val p = call.principal<UserPrincipal>()
-                call.respondText("Hello, ${p?.id}! You have these roles: ${p?.roles?.toString()}.")
+                val expiresAt = p?.jwtPayload?.expiresAt?.time?.minus(System.currentTimeMillis())
+                val name = p?.userName ?: p?.userId ?: "Unknown"
+                call.respondText("Hello, ${name}! You have these roles: ${p?.roles?.toString()}. Token is expired at $expiresAt ms.")
             }
         }
     }

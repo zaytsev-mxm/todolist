@@ -49,11 +49,12 @@ fun Application.module() {
     install(Authentication) {
         jwt("auth-jwt") {
             realm = TokenConstants.realm
-            verifier(JWT
-                .require(Algorithm.HMAC256(TokenConstants.secret))
-                .withAudience(TokenConstants.audience)
-                .withIssuer(TokenConstants.issuer)
-                .build()
+            verifier(
+                JWT
+                    .require(Algorithm.HMAC256(TokenConstants.secret))
+                    .withAudience(TokenConstants.audience)
+                    .withIssuer(TokenConstants.issuer)
+                    .build()
             )
             // Extract JWT from a cookie named "token"
             // (by default, Ktor expects it to be sent as an "Authorization: Bearer ...value" header)
@@ -68,15 +69,18 @@ fun Application.module() {
 
                 // Single DB fetch with minimal fields
                 val userDTO = Users.fetchUser(id = userId) ?: return@validate null
-                // TODO: currently I use a plain data class UserPrincipal,
-                //  but in the future I will use a class with more fields,
-                //  like roles, permissions, etc.
-                //  I need to consider extending the JWTPrincipal class to achieve this.
-                //  @SEE (import io.ktor.server.auth.jwt.JWTPrincipal)
-                UserPrincipal(id = userDTO.id, roles = userDTO.roles) // no more DB in handlers
+                UserPrincipal(
+                    userId = userDTO.id,
+                    userName = userDTO.username,
+                    roles = userDTO.roles,
+                    jwtPayload = credential.payload
+                ) // no more DB in handlers
             }
             challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired. DefaultScheme: $defaultScheme, realm: $realm")
+                call.respond(
+                    HttpStatusCode.Unauthorized,
+                    "Token is not valid or has expired. DefaultScheme: $defaultScheme, realm: $realm"
+                )
             }
         }
     }

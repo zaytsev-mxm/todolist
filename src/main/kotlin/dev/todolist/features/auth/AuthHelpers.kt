@@ -6,7 +6,7 @@ import io.ktor.server.application.ApplicationCall
 import io.ktor.server.response.respond
 
 suspend fun ApplicationCall.requireOwner(principal: UserPrincipal, param: String = "id") {
-    if (parameters[param] != principal.id) {
+    if (parameters[param] != principal.userId) {
         respond(HttpStatusCode.Forbidden, "Not your resource")
     }
 }

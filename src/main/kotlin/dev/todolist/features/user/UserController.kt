@@ -1,5 +1,6 @@
 package dev.todolist.features.user
 
+import com.auth0.jwt.interfaces.Payload
 import dev.todolist.database.users.UserDTO
 import dev.todolist.database.users.Users
 import dev.todolist.features.common.RouteController
@@ -9,8 +10,10 @@ import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 
 data class UserPrincipal(
-    val id: String? = null,
-    val roles: Set<String> = emptySet()
+    val userId: String? = null,
+    val userName: String? = null,
+    val roles: Set<String> = emptySet(),
+    val jwtPayload: Payload? = null
 )
 
 class UserController : RouteController() {
