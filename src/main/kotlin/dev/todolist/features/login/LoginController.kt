@@ -43,14 +43,14 @@ class LoginController {
     }
 
     private fun makeJwtString(userid: String): String {
-        val time30min = System.currentTimeMillis() + 1800000
+        val time30min = 30 * 60 * 1000
         val expiresAt = System.currentTimeMillis() + time30min
         val token = JWT.create()
             .withAudience(TokenConstants.audience)
             .withIssuer(TokenConstants.issuer)
             .withClaim("userid", userid)
             .withClaim("roles", listOf<String>())
-            .withExpiresAt(Date(System.currentTimeMillis() + expiresAt))
+            .withExpiresAt(Date(expiresAt))
             .sign(Algorithm.HMAC256(TokenConstants.secret))
 
         return token
