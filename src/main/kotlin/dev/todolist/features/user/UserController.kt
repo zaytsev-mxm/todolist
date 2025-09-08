@@ -47,16 +47,15 @@ class UserController {
 
     suspend fun updateCurrentUser(call: ApplicationCall) {
         val userPrincipal = call.principal<UserPrincipal>()!!
+        val userDTO = Users.fetch(id = userPrincipal.userId)
 
-        val user = Users.fetch(id = userPrincipal.userId)
-
-        val userDTO = call.receive<UserDTO>()
-
-        if (user != null) {
+        if (userDTO != null) {
             try {
-                val newUser = user.copy(username = userDTO.username)
-                Users.update(newUser)
-                call.respond(HttpStatusCode.OK, UserResponseRemote(newUser))
+                val userDTOFromRequest = call.receive<UserDTO>()
+                // Below: currently we only allow overriding the username
+                val newUserDTO = userDTO.copy(username = userDTOFromRequest.username)
+                Users.update(newUserDTO)
+                call.respond(HttpStatusCode.OK, UserResponseRemote(newUserDTO))
             } catch (e: IllegalArgumentException) {
                 call.respond(HttpStatusCode.PaymentRequired, "Invalid user data: ${e.message}")
             } catch (e: Exception) {
