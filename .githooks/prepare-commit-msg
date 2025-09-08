@@ -1,0 +1,17 @@
+#!/bin/sh
+# Args: $1 = commit message file, $2 = source, $3 = SHA1
+case "$2" in merge|squash) exit 0;; esac
+
+BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+TICKET=$(echo "$BRANCH" | grep -oE '[A-Z]+-[0-9]+' | head -1)
+
+[ -z "$TICKET" ] && exit 0
+
+# If already present, do nothing
+if grep -qE "(^| )$TICKET( |:)" "$1"; then
+  exit 0
+fi
+
+# Prepend safely without GNU/BSD sed quirks
+tmp="${1}.tmp.$$"
+{ printf "%s " "$TICKET"; cat "$1"; } > "$tmp" && mv "$tmp" "$1"

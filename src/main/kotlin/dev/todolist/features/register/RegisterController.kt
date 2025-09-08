@@ -19,7 +19,7 @@ class RegisterController {
             return
         }
 
-        val userDTO = Users.fetchUser(registerReceiveRemote.login)
+        val userDTO = Users.fetch(registerReceiveRemote.login)
 
         if (userDTO != null) {
             call.respond(HttpStatusCode.Conflict, "User already exists")
@@ -29,14 +29,16 @@ class RegisterController {
             val tokenId = UUID.randomUUID().toString()
             val userId = UUID.randomUUID().toString()
 
+            val userDTO = UserDTO(
+                id = userId,
+                login = registerReceiveRemote.login,
+                password = registerReceiveRemote.password,
+                email = registerReceiveRemote.email,
+                username = ""
+            )
+
             try {
-                Users.insert(UserDTO(
-                    id = userId,
-                    login = registerReceiveRemote.login,
-                    password = registerReceiveRemote.password,
-                    email = registerReceiveRemote.email,
-                    username = ""
-                ))
+                Users.insert(userDTO)
             } catch (e: Exception) {
                 println(e)
                 call.respond(HttpStatusCode.InternalServerError, "Something went wrong")
@@ -49,7 +51,7 @@ class RegisterController {
                 token = token
             ))
 
-            call.respond(RegisterResponseRemote(token = token))
+            call.respond(RegisterResponseRemote(token, userDTO))
             return
         }
     }

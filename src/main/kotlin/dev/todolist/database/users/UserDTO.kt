@@ -4,10 +4,11 @@ import kotlinx.serialization.Serializable
 
 // Data-transfer object
 @Serializable
-class UserDTO(
+data class UserDTO(
     val id: String? = null,
-    val login: String,
+    val login: String? = null,
     val password: String? = null,
-    val email: String?,
-    val username: String?,
+    val email: String? = null,
+    val username: String? = null,
+    var roles: Set<String> = emptySet()
 )

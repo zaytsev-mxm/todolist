@@ -2,6 +2,7 @@ package dev.todolist.database.users
 
 import io.ktor.http.*
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.springframework.security.crypto.bcrypt.BCrypt
 
@@ -24,7 +25,7 @@ object Users: Table("users".quote()) {
 
             Users.insert {
                 it[id] = userDTO.id ?: throw IllegalArgumentException("User ID cannot be null")
-                it[login] = userDTO.login
+                it[login] = userDTO.login ?: ""
                 it[password] = hashedPassword
                 it[username] = userDTO.username ?: ""
                 it[email] = userDTO.email ?: ""
@@ -32,21 +33,39 @@ object Users: Table("users".quote()) {
         }
     }
 
-    fun fetchUser(login: String): UserDTO? {
+    private fun toDTO(row: ResultRow): UserDTO =
+        UserDTO(
+            id = row[Users.id],
+            login = row[Users.login],
+            password = row[Users.password],
+            username = row[Users.username],
+            email = row[Users.email],
+        )
+
+    fun fetch(login: String? = null, id: String? = null): UserDTO? {
+        val condition = when {
+            login != null -> Users.login eq login
+            id != null -> Users.id eq id
+            else -> return null
+        }
+
         return transaction {
             try {
-                val userModel = Users.selectAll().where { Users.login eq login }.singleOrNull()
-                userModel?.let {
-                    UserDTO(
-                        id = it[Users.id],
-                        login = it[Users.login],
-                        password = it[Users.password],
-                        username = it[Users.username],
-                        email = it[Users.email],
-                    )
-                }
+                Users.selectAll().where { condition }
+                    .singleOrNull()
+                    ?.let(::toDTO)
             } catch (e: Exception) {
                 null
+            }
+        }
+    }
+
+    fun update(userDTO: UserDTO) {
+        transaction {
+            val id = userDTO.id ?: ""
+            val userName = userDTO.username ?: ""
+            Users.update({ Users.id eq id }) {
+                it[Users.username] = userName
             }
         }
     }
