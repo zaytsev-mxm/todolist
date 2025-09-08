@@ -23,8 +23,8 @@ fun Application.configureUserRouting(userController: UserController = UserContro
 
             authenticate("auth-jwt") {
                 get {
-                    val p = call.principal<UserPrincipal>()!!
-                    call.requireRole(p, "admin")
+                    val userPrincipal = call.principal<UserPrincipal>()!!
+                    call.requireRole(userPrincipal, "admin")
                     call.respondText(
                         "Hello, ${
                             (call.principal<JWTPrincipal>()?.payload?.getClaim("username")?.asString())
@@ -44,20 +44,20 @@ fun Application.configureUserRouting(userController: UserController = UserContro
 
                 route("/{id}") {
                     get {
-                        val p = call.principal<UserPrincipal>()!!
-                        call.requireOwner(p)
+                        val userPrincipal = call.principal<UserPrincipal>()!!
+                        call.requireOwner(userPrincipal)
                         userController.getUserById(call)
                     }
 
                     patch {
-                        val p = call.principal<UserPrincipal>()!!
-                        call.requireOwner(p)
+                        val userPrincipal = call.principal<UserPrincipal>()!!
+                        call.requireOwner(userPrincipal)
                         userController.updateUserById(call)
                     }
 
                     delete {
-                        val p = call.principal<UserPrincipal>()!!
-                        call.requireOwner(p)
+                        val userPrincipal = call.principal<UserPrincipal>()!!
+                        call.requireOwner(userPrincipal)
                         userController.removeUserById(call)
                     }
                 }

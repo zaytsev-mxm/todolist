@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 // Data-transfer object
 @Serializable
 data class UserDTO(
-    val id: String,
+    val id: String? = null,
     val login: String? = null,
     val password: String? = null,
     val email: String? = null,

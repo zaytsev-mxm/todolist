@@ -21,6 +21,12 @@ class LoginController {
         if (userDTO == null) {
             call.respond(HttpStatusCode.NotFound, "User not found")
         } else {
+            // @TODO - we need this guard because the UserDTO has the "id" field marked as nullable
+            // We need to learn the actual use-cases for the UserDTO, because currently
+            // having all its fields nullable doesn't make much sense
+            if (userDTO.id == null) throw IllegalArgumentException(
+                "User id is null"
+            )
             if (BCrypt.checkpw(loginReceiveRemote.password, userDTO.password)) {
                 val jwtString = makeJwtString(userDTO.id)
                 val tokenDTO = TokenDTO(
