@@ -22,8 +22,8 @@ object TokensManagement {
 }
 
 object TokenConstants {
-    val secret = "secret"
-    val issuer = "http://0.0.0.0:8080/"
-    val audience = "http://0.0.0.0:8080/hello"
-    val realm = "Access to 'hello'"
+    val secret = System.getenv("JWT_SECRET") ?: ""
+    val issuer = System.getenv("JWT_ISSUER") ?: ""
+    val audience = System.getenv("JWT_AUDIENCE") ?: ""
+    val realm = System.getenv("JWT_REALM") ?: ""
 }
