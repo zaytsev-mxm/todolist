@@ -42,7 +42,7 @@ object Users: Table("users".quote()) {
             email = row[Users.email],
         )
 
-    fun fetchUser(login: String? = null, id: String? = null): UserDTO? {
+    fun fetch(login: String? = null, id: String? = null): UserDTO? {
         val condition = when {
             login != null -> Users.login eq login
             id != null -> Users.id eq id

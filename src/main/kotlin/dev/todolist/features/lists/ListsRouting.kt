@@ -1,10 +1,6 @@
 package dev.todolist.features.lists
 
 import io.ktor.server.application.*
-import io.ktor.server.auth.authenticate
-import io.ktor.server.auth.jwt.JWTPrincipal
-import io.ktor.server.auth.principal
-import io.ktor.server.response.respondText
 import io.ktor.server.routing.*
 
 fun Application.configureListsRouting() {

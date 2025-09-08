@@ -16,28 +16,23 @@ import java.util.*
 class LoginController {
     suspend fun performLogin(call: ApplicationCall) {
         val loginReceiveRemote = call.receive<LoginReceiveRemote>()
-        val userDTO = Users.fetchUser(loginReceiveRemote.login)
+        val userDTO = Users.fetch(loginReceiveRemote.login)
 
         if (userDTO == null) {
             call.respond(HttpStatusCode.NotFound, "User not found")
-            return
         } else {
-            with (userDTO.id ?: throw IllegalArgumentException("User id cannot be null")) {
-                val storedHashedPassword = userDTO.password
-                if (BCrypt.checkpw(loginReceiveRemote.password, storedHashedPassword)) {
-                    val jwtString = makeJwtString(userDTO.id)
-                    Tokens.insert(TokenDTO(
-                        id = UUID.randomUUID().toString(),
-                        userId = userDTO.id,
-                        token = jwtString
-                    ))
-                    call.response.cookies.append(Cookie("token", jwtString))
-                    call.respond(LoginResponseRemote(jwtString, userDTO))
-                    return
-                } else {
-                    call.respond(HttpStatusCode.Unauthorized, "Invalid password")
-                    return
-                }
+            if (BCrypt.checkpw(loginReceiveRemote.password, userDTO.password)) {
+                val jwtString = makeJwtString(userDTO.id)
+                val tokenDTO = TokenDTO(
+                    id = UUID.randomUUID().toString(),
+                    userId = userDTO.id,
+                    token = jwtString
+                )
+                Tokens.insert(tokenDTO)
+                call.response.cookies.append(Cookie("token", jwtString))
+                call.respond(LoginResponseRemote(jwtString, userDTO))
+            } else {
+                call.respond(HttpStatusCode.Unauthorized, "Invalid password")
             }
         }
     }

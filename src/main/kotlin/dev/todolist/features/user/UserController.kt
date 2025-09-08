@@ -3,9 +3,9 @@ package dev.todolist.features.user
 import com.auth0.jwt.interfaces.Payload
 import dev.todolist.database.users.UserDTO
 import dev.todolist.database.users.Users
-import dev.todolist.features.common.RouteController
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
+import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 
@@ -16,16 +16,10 @@ data class UserPrincipal(
     val jwtPayload: Payload? = null
 )
 
-class UserController : RouteController() {
+class UserController {
     suspend fun getCurrentUser(call: ApplicationCall) {
-        val tokenDTO = getToken(call)
-
-        if (tokenDTO == null) {
-            call.respond(HttpStatusCode.Unauthorized)
-            return
-        }
-
-        val user = Users.fetchUser(id = tokenDTO.userId)
+        val userPrincipal = call.principal<UserPrincipal>()!!
+        val user = Users.fetch(id = userPrincipal.userId)
 
         if (user != null) {
             call.respond(HttpStatusCode.OK, UserResponseRemote(user))
@@ -42,24 +36,19 @@ class UserController : RouteController() {
             return
         }
 
-        val user = Users.fetchUser(id = id)
+        val userDTO = Users.fetch(id = id)
 
-        if (user != null) {
-            call.respond(HttpStatusCode.OK, UserResponseRemote(user))
+        if (userDTO != null) {
+            call.respond(HttpStatusCode.OK, UserResponseRemote(userDTO))
         } else {
             call.respond(HttpStatusCode.NotFound, "User not found")
         }
     }
 
     suspend fun updateCurrentUser(call: ApplicationCall) {
-        val tokenDTO = getToken(call)
+        val userPrincipal = call.principal<UserPrincipal>()!!
 
-        if (tokenDTO == null) {
-            call.respond(HttpStatusCode.Unauthorized)
-            return
-        }
-
-        val user = Users.fetchUser(id = tokenDTO.userId)
+        val user = Users.fetch(id = userPrincipal.userId)
 
         val userDTO = call.receive<UserDTO>()
 

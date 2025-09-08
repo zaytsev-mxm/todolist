@@ -68,7 +68,7 @@ fun Application.module() {
                 if (userId.isBlank()) return@validate null
 
                 // Single DB fetch with minimal fields
-                val userDTO = Users.fetchUser(id = userId) ?: return@validate null
+                val userDTO = Users.fetch(id = userId) ?: return@validate null
                 UserPrincipal(
                     userId = userDTO.id,
                     userName = userDTO.username,
@@ -89,7 +89,7 @@ fun Application.module() {
     configureSerialization()
 
     // Routes:
-    configureRouting()
+    configureBasicRouting()
     configureLoginRouting()
     configureRegisterRouting()
     configureListsRouting()

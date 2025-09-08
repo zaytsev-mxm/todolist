@@ -19,7 +19,7 @@ class RegisterController {
             return
         }
 
-        val userDTO = Users.fetchUser(registerReceiveRemote.login)
+        val userDTO = Users.fetch(registerReceiveRemote.login)
 
         if (userDTO != null) {
             call.respond(HttpStatusCode.Conflict, "User already exists")

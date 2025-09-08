@@ -8,7 +8,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.plugins.swagger.*
 
-fun Application.configureRouting() {
+fun Application.configureBasicRouting() {
     routing {
         get("/") {
             call.respondText("Hello World!")
