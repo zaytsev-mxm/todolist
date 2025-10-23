@@ -1,7 +1,7 @@
 FROM amazoncorretto:21
 
-# Mmetadata
-LABEL version="1.0.2"
+# Metadata
+LABEL version=${DOCKER_IMAGE_VERSION}
 LABEL description="ToDo list backend"
 LABEL maintainer="zaytsev.mxm@gmail.com"
 

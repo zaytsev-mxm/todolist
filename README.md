@@ -14,7 +14,9 @@ Everything is as simple as:
 ```sh
 # Create the .env file (amend its content if needed)
 cp .env.sample .env
-
+```
+and
+```sh
 # Run the app
 docker compose up --build
 ```
