@@ -23,7 +23,7 @@ import io.ktor.server.response.respond
 import dev.todolist.database.DatabaseFactory
 
 fun main() {
-    embeddedServer(Netty, port = System.getenv("PORT_APP")?.toInt() ?: 8080, host = "0.0.0.0", module = Application::module)
+    embeddedServer(Netty, port = System.getenv("PORT_APP").toInt(), host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 

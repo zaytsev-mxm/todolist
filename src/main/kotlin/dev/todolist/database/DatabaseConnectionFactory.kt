@@ -11,7 +11,7 @@ object DatabaseFactory {
     
     fun init() {
         val driverClassName = "org.postgresql.Driver"
-        val jdbcURL = "jdbc:postgresql://${getEnv("DB_HOST", "localhost")}:${getEnv("PORT_DB", "5432")}/${getEnv("DB_NAME", "todolist")}"
+        val jdbcURL = getDbUrl()
         val dbUser = getEnv("DB_USER", "postgres")
         val dbPassword = getEnv("DB_PASSWORD", "postgres")
         
@@ -31,6 +31,13 @@ object DatabaseFactory {
         
         // Seeding control based on environment
         handleSeeding()
+    }
+
+    private fun getDbUrl(): String {
+        val dbHost = getEnv("DB_HOST", "localhost")
+        val portDb = getEnv("PORT_DB", "5432")
+        val dbName = getEnv("DB_NAME", "todolist")
+        return "jdbc:postgresql://${dbHost}:${portDb}/${dbName}"
     }
     
     private fun handleSeeding() {
