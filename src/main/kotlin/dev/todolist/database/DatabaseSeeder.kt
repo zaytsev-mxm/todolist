@@ -2,7 +2,6 @@ package dev.todolist.database
 
 import dev.todolist.database.users.UserDTO
 import dev.todolist.database.users.Users
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
