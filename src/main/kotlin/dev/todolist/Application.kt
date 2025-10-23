@@ -20,27 +20,17 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.respond
-import org.jetbrains.exposed.sql.Database
+import dev.todolist.database.DatabaseFactory
 
 fun main() {
-    Database.connect(
-        url = getDbUrl(),
-        driver = "org.postgresql.Driver",
-        user = System.getenv("DB_USER") ?: "",
-        password = System.getenv("DB_PASSWORD") ?: "",
-    )
     embeddedServer(Netty, port = System.getenv("PORT_APP").toInt(), host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
 
-fun getDbUrl(): String {
-    val dbHost = System.getenv("DB_HOST") ?: ""
-    val portDb = System.getenv("PORT_DB") ?: ""
-    val dbName = System.getenv("DB_NAME") ?: ""
-    return "jdbc:postgresql://${dbHost}:${portDb}/${dbName}"
-}
-
 fun Application.module() {
+    // Initialize a database with schema creation
+    DatabaseFactory.init()
+
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
