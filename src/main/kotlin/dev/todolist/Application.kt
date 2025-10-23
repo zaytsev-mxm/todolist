@@ -20,7 +20,6 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.respond
-
 import dev.todolist.database.DatabaseFactory
 
 fun main() {
@@ -31,8 +30,7 @@ fun main() {
 fun Application.module() {
     // Initialize a database with schema creation
     DatabaseFactory.init()
-    
-    // ... existing code ...
+
     install(CORS) {
         anyHost()
         allowHeader(HttpHeaders.ContentType)
