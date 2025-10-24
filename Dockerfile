@@ -1,6 +1,7 @@
 FROM amazoncorretto:21
 
 # Metadata
+ARG DOCKER_IMAGE_VERSION
 LABEL version=${DOCKER_IMAGE_VERSION}
 LABEL description="ToDo list backend"
 LABEL maintainer="zaytsev.mxm@gmail.com"
