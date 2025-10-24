@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+set -e
+
 # load-env.sh
 # Usage: source this file and call: load_env [path_to_env_file]
 # Example: load_env ".env"

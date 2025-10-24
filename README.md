@@ -10,11 +10,15 @@ we will be able to:
 
 ## Basic setup
 
+> Look into the `.env.sample` file for more details.
+
 Everything is as simple as:
 ```sh
 # Create the .env file (amend its content if needed)
 cp .env.sample .env
-
+```
+and
+```sh
 # Run the app
 docker compose up --build
 ```
@@ -24,6 +28,22 @@ docker compose up --build
 
 If you are using IntelliJ IDEA, you can run the app by pressing the green play button in your IDE.
 For a detailed guide, please see [this](./docs/LAUNCHING_WITH_INTELLIJ_IDEA.md) document.
+
+### How to run via manually via Bash
+
+If you want (for any reason) to be able to run the app manually via Bash, you can do so by:
+
+- Run the DB via
+```sh
+sh tools/db.sh --up
+# or
+# sh tools/db.sh --down
+# to turn it off
+```
+- Run the app via
+```sh
+sh tools/dev.sh --load-env
+```
 
 ## Git Hooks
 

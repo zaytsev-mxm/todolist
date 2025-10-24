@@ -16,6 +16,7 @@ To do that, you need to create a new task in your run configuration:
 - Go to "Edit configurations" and then press the "+" button
 - Select "Docker", then "Docker compose"
 - Specify the path to your `docker-compose.yml` file and in the "Services" field put in `db`
-  Once that configuration is added, you should get back to editing your "main" configuration.
-  Now, in the "Before launch" section, add a new task and select that "Docker compose" configuration that you just created:
-  ![final_config](./img/final_config.png "final_config")
+  ![config_docker](./img/config_docker.png "config_docker")
+- Once that configuration is added, you should get back to editing your "main" configuration.
+- Now, in the "Before launch" section, add a new task and select that "Docker compose" configuration that you just created. Put it BEFORE the "Build" task, so the database is up and running before the app is built.
+  ![config_app](./img/config_app.png "config_app")

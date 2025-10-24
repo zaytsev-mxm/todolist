@@ -1,14 +1,13 @@
 services:
   db:
     image: postgres:15-alpine
-    env_file:
-      - .env
     environment:
+      POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
+      PGPORT: ${PORT_DB}
     ports:
-      - "${PORT_DB}:${PORT_DB}"
+      - "${PORT_DB}:${PORT_DB}" # "host:container"
     volumes:
       - db-data:/var/lib/postgresql/data
     networks:
@@ -28,11 +27,7 @@ services:
     depends_on:
       - db
     ports:
-      - "${PORT_APP}:${PORT_APP}"
-    environment:
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      PORT_APP: ${PORT_APP}
+      - "${PORT_APP}:${PORT_APP}" # "host:container"
     volumes:
       - .:/app
     networks:
